@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validasi</title>
+</head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+    body{
+        background-color: pink;
+        justify-content: center;
+        display: flex;
+    }
+    .container{
+        width: 90vw;
+        max-width: 600px;
+        padding: 2em 1.5em;
+        background-color: rgb(255, 255, 240);
+        margin: 1em;
+        border-radius: 0.5em;
+    }
+    h4{
+        font-size: 2em;
+    }
+    .input-section{
+        margin: 0.5em 0;
+    }
+    label, .error-message{
+        display:  block;
+        font-size:  1em;
+    }                  
+     label{
+        margin-bottom: 0.5em;
+        font-size: 1em;
+    }               
+    .error-message{
+        margin-top: 0.2em;
+    }                   
+    input, button{
+        display: block;
+        outline: none;
+        width: 100%;
+        padding: 0.5em;
+        border-radius: 0.3em;
+    }
+    input{
+        padding: 1em 0.5em;
+        border: i.5px solid red;
+    }
+    button{
+        font-size: 1em;
+        background-color: pink;
+        border: none;
+        color: black;
+        padding: o.5em 0;
+        margin-top: 2em;
+    }                
+    .error{
+        color: red;
+    }                                            
+    .hide{
+        display: none;
+    }                 
+    .result{
+        margin-top: 20px;
+        padding: 15px;
+        background:  rgb(255, 255, 240);
+        border-radius: 5px;
+        display: none;
+    }                                                                                                                                              
+</style>
+
+<body>
+    <div class="container">
+        <h2>Form Pembelian Tiket</h2>
+        <label for="nama">Nama Pelanggan:</label>
+        <input type="text" id="nama" name="nama" maxlength="30">
+        <span id="namaError" class="error"></span><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+        <span id="emailError" class="error"></span><br><br>
+
+        <label for="jam">Jam Keberangkatan (HH:MM):</label>
+        <input type="text" id="jam" name="jam">
+        <span id="jamError" class="error"></span><br><br>
+
+        <label for="tujuan">Tujuan Keberangkatan:</label>
+        <input type="text" id="tujuan" name="tujuan">
+        <span id="tujuanError" class="error"></span><br><br>
+
+        <label for="jumlah">Jumlah Tiket:</label>
+        <input type="number" id="jumlah" name="jumlah" min="1" max="10">
+        <span id="jumlahError" class="error"></span><br><br>
+
+        <button type="button" onclick="validateForm()">Submit</button>
+
+    <div class="result" id="result"></div>
+    </div>
+    <Script>
+        function submit(e) {
+            e.preventDefault()
+            validateForm()
+        }
+         function validateForm() {
+            let valid = true;
+            // Clear previous error messages
+            document.getElementById('namaError').innerText = '';
+            document.getElementById('emailError').innerText = '';
+            document.getElementById('jamError').innerText = '';
+            document.getElementById('tujuanError').innerText = '';
+            document.getElementById('jumlahError').innerText = '';
+
+            // Clear previous invalid styling
+            document.getElementById('nama').classList.remove('invalid', 'valid');
+            document.getElementById('email').classList.remove('invalid', 'valid');
+            document.getElementById('jam').classList.remove('invalid', 'valid');
+            document.getElementById('tujuan').classList.remove('invalid', 'valid');
+            document.getElementById('jumlah').classList.remove('invalid', 'valid');
+
+            // Validate Nama
+            const nama = document.getElementById('nama').value;
+            if (!nama || nama.length > 30) {
+                valid = false;
+                document.getElementById('namaError').innerText = 'Nama pelanggan harus diisi dan maksimal 30 karakter.';
+                document.getElementById('nama').classList.add('invalid');
+            } else {
+                document.getElementById('nama').classList.add('valid');
+            }
+
+            // Validate Email
+            const email = document.getElementById('email').value;
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!email || !emailRegex.test(email)) {
+                valid = false;
+                document.getElementById('emailError').innerText = 'Email harus valid.';
+                document.getElementById('email').classList.add('invalid');
+            } else {
+                document.getElementById('email').classList.add('valid');
+            }
+
+            // Validate Jam Keberangkatan
+            const jam = document.getElementById('jam').value;
+            const jamRegex = /^(?:[01]?[0-9]|2[0-3]):([0-5][0-9])$/;
+            if (!jam || !jamRegex.test(jam)) {
+                valid = false;
+                document.getElementById('jamError').innerText = 'Jam harus dalam format HH:MM dan antara 00:00 - 23:59.';
+                document.getElementById('jam').classList.add('invalid');
+            } else {
+                document.getElementById('jam').classList.add('valid');
+            }
+
+            // Validate Tujuan
+            const tujuan = document.getElementById('tujuan').value;
+            if (!tujuan) {
+                valid = false;
+                document.getElementById('tujuanError').innerText = 'Tujuan keberangkatan harus diisi.';
+                document.getElementById('tujuan').classList.add('invalid');
+            } else {
+                document.getElementById('tujuan').classList.add('valid');
+            }
+
+            // Validate Jumlah Tiket
+            const jumlah = document.getElementById('jumlah').value;
+            if (!jumlah || jumlah < 1 || jumlah > 10) {
+                valid = false;
+                document.getElementById('jumlahError').innerText = 'Jumlah tiket harus di antara 1 dan 10.';
+                document.getElementById('jumlah').classList.add('invalid');
+            } else {
+                document.getElementById('jumlah').classList.add('valid');
+            }
+
+            // Jika form valid, tampilkan data
+            if (valid) {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <table>
+                        <caption><h3>Data Pembelian Tiket</h3></caption>
+                        <tr>
+                            <td><strong>Nama Pelanggan </strong></td>
+                            <td>:</td>
+                            <td>${nama}<br></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Email </strong></td>
+                            <td>:</td>
+                            <td>${email}<br></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jam Keberangkatan </strong></td>
+                            <td>:</td>
+                            <td>${jam}<br></td>
+                        </tr>
+                        <tr>
+                            <td><strong>ujuan Keberangkatan </strong></td>
+                            <td>:</td>
+                            <td>${tujuan}<br></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jumlah Tiket </strong></td>
+                            <td>:</td>
+                            <td>${jumlah}<br></td>
+                        </tr>
+                    </table>
+                `;
+                result.style.display = 'block';
+            }
+        }
+    </Script>
+</body>
+</html>
